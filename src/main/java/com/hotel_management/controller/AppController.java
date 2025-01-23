@@ -1,9 +1,10 @@
 package com.hotel_management.controller;
 
 import com.hotel_management.entity.AppUser;
+import com.hotel_management.payload.LoginDto;
 import com.hotel_management.service.AppService;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,13 +19,19 @@ public class AppController {
         this.appService = appService;
     }
 
-    @GetMapping("/login")
-    public String Login(){
-        return "that's my boy ";
-    }
-
     @PostMapping("/createUser")
     public ResponseEntity<?> createUser(@RequestBody AppUser appUser) {
        return appService.createUser(appUser);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> userLogIn(
+            @RequestBody LoginDto loginDto){
+        boolean logIn = appService.verifyLogIn(loginDto);
+        if (logIn){
+            return new ResponseEntity<>("User logged in ", HttpStatus.OK);
+    }else {
+            return new ResponseEntity<>("invalid username/password", HttpStatus.FORBIDDEN);
+        }
     }
 }
