@@ -1,7 +1,7 @@
 package com.hotel_management.controller;
-
 import com.hotel_management.entity.AppUser;
 import com.hotel_management.payload.LoginDto;
+import com.hotel_management.payload.TokenDto;
 import com.hotel_management.service.AppService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,11 +25,14 @@ public class AppController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> userLogIn(
+    public ResponseEntity<?> userLogIn(
             @RequestBody LoginDto loginDto){
-        boolean logIn = appService.verifyLogIn(loginDto);
-        if (logIn){
-            return new ResponseEntity<>("User logged in ", HttpStatus.OK);
+        String token = appService.verifyLogIn(loginDto);
+        if (token != null){
+            TokenDto tokenDto = new TokenDto();
+            tokenDto.setToken(token);
+            tokenDto.setType("JWT");
+            return new ResponseEntity<>(tokenDto, HttpStatus.OK);
     }else {
             return new ResponseEntity<>("invalid username/password", HttpStatus.FORBIDDEN);
         }
