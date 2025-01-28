@@ -19,11 +19,12 @@ public class AppController {
         this.appService = appService;
     }
 
+    // USER
     @PostMapping("/createUser")
     public ResponseEntity<?> createUser(@RequestBody AppUser appUser) {
-       return appService.createUser(appUser);
+       return appService.userSigNup(appUser);
     }
-
+    // USER
     @PostMapping("/login")
     public ResponseEntity<?> userLogIn(
             @RequestBody LoginDto loginDto){
@@ -36,5 +37,11 @@ public class AppController {
     }else {
             return new ResponseEntity<>("invalid username/password", HttpStatus.FORBIDDEN);
         }
+    }
+
+    // OWNER
+    @PostMapping("/owner-signup")
+    public ResponseEntity<?> createAdmin(@RequestBody AppUser appUser) {
+        return appService.ownerSignUp(appUser);
     }
 }

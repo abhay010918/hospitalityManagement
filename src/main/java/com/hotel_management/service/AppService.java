@@ -21,7 +21,8 @@ public class AppService {
         this.jwtService = jwtService;
     }
 
-    public ResponseEntity<?> createUser(AppUser appUser) {
+    // USER SIGN UP
+    public ResponseEntity<?> userSigNup(AppUser appUser) {
         // Save the AppUser entity directly
         Optional<AppUser> byUsername = appUserRepository.findByUsername(appUser.getUsername());
         if( byUsername.isPresent()){
@@ -34,12 +35,13 @@ public class AppService {
 
         String hashpw = BCrypt.hashpw(appUser.getPassword(), BCrypt.gensalt(4));
         appUser.setPassword(hashpw);
+        appUser.setRole("USER");
         AppUser save = appUserRepository.save(appUser);
         return new ResponseEntity<>(save,HttpStatus.CREATED);
 
     }
 
-// login
+// USER LOGIN
     public String verifyLogIn(LoginDto loginDto){
         Optional<AppUser> byUsername = appUserRepository.findByUsername(loginDto.getUsername());
 
@@ -52,5 +54,25 @@ public class AppService {
         return null;
         }
         return null;
+    }
+
+    // OWNER SIGN UP
+    public ResponseEntity<?> ownerSignUp(AppUser appUser) {
+        // Save the AppUser entity directly
+        Optional<AppUser> byUsername = appUserRepository.findByUsername(appUser.getUsername());
+        if( byUsername.isPresent()){
+            return new ResponseEntity<>("Username already taken", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        Optional<AppUser> byEmail = appUserRepository.findByEmail(appUser.getEmail());
+        if( byEmail.isPresent()){
+            return new ResponseEntity<>("Email already taken", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        String hashpw = BCrypt.hashpw(appUser.getPassword(), BCrypt.gensalt(4));
+        appUser.setPassword(hashpw);
+        appUser.setRole("OWNER");
+        AppUser save = appUserRepository.save(appUser);
+        return new ResponseEntity<>(save,HttpStatus.CREATED);
+
     }
 }

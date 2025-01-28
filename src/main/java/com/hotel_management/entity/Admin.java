@@ -7,8 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "app_user")
-public class AppUser {
+public class Admin {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,6 +27,4 @@ public class AppUser {
 
     @Column(name = "role", nullable = false, length = 20)
     private String role;
-
-
 }
