@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ReviewService {
     private final ReviewRepository reviewRepository;
@@ -19,12 +21,22 @@ public class ReviewService {
         this.propertyRepository = propertyRepository;
     }
 
-    public ResponseEntity<Review> writeReview(Review review, long propertyId, AppUser user) {
+    // For Writing The Review
+    public ResponseEntity<?> writeReview(Review review, long propertyId, AppUser user) {
         Property property = propertyRepository.findById(propertyId).get();
+        if(reviewRepository.existsByAppUserAndProperty(user,property)){
+            return new ResponseEntity<>("User Already Exists", HttpStatus.NOT_FOUND);
+        }
         review.setProperty(property);
         review.setAppUser(user);
         Review savedReview = reviewRepository.save(review);
         return new ResponseEntity<>(savedReview, HttpStatus.OK);
+    }
+
+    // For reading the review
+    public ResponseEntity<List<Review>> getReview(AppUser user){
+        List<Review> byAppUser = reviewRepository.findByAppUser(user);
+        return new ResponseEntity<>(byAppUser, HttpStatus.OK);
 
     }
 }

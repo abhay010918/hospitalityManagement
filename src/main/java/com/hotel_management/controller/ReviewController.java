@@ -9,6 +9,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.PublicKey;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/reviews")
@@ -21,11 +22,18 @@ public class ReviewController {
     }
 
     @PostMapping("/writeReview")
-    public ResponseEntity<Review> addReview(
+    public ResponseEntity<?> addReview(
             @RequestBody Review review,
             @RequestParam long propertyId,
             @AuthenticationPrincipal AppUser user
             ){
         return reviewService.writeReview(review,propertyId,user);
+    }
+
+    @GetMapping("/getReview")
+    public ResponseEntity<List<Review>> getReviewById(
+            @AuthenticationPrincipal AppUser user
+    ){
+        return reviewService.getReview(user);
     }
 }
