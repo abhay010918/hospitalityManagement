@@ -39,4 +39,7 @@ public class PropertyService {
         imagesRepository.save(image);
     }
 
+    public Property findById(long propertyId) {
+        return propertyRepository.findById(propertyId).get();
+    }
 }
