@@ -1,6 +1,6 @@
 package com.hotel_management.controller;
 
-import com.hotel_management.dto.EmailRequest;
+import com.hotel_management.payload.EmailRequest;
 import com.hotel_management.service.EmailService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,4 +1,4 @@
-package com.hotel_management.dto;
+package com.hotel_management.payload;
 
 import lombok.Getter;
 import lombok.Setter;

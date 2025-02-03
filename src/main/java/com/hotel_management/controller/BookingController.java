@@ -57,13 +57,20 @@ public class BookingController {
             }
         }
 
+        //
+
+        for (Room room : rooms) {
+            double totalPrice = room.getPrice() * rooms.size() - 1;
+
+            }
+
+
         // Save booking
         Bookings booking = bookingService.saveBooking(bookings);
         if (booking != null) {
             // Update room count
             for (Room room : rooms) {
                 room.setCount(room.getCount() - 1);
-                // Save updated room count (Assuming you have a `roomRepository`)
                 bookingsRepository.save(booking);
             }
         }
